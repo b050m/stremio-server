@@ -1,10 +1,17 @@
 FROM tsaridas/stremio-docker:latest
 
-# إعطاء صلاحيات التشغيل للملف الأساسي
-RUN chmod +x ./stremio-web-service.sh
+# تحديد مسار العمل الصحيح
+WORKDIR /srv/stremio-server
 
-# المنفذ
+# إظهار الملفات للتأكد (ستظهر في سجلات Render)
+RUN ls -la
+
+# إعطاء صلاحيات التشغيل للملف الصحيح
+RUN chmod +x ./stremio-web-service-run.sh
+
+# إعداد المتغيرات البيئية
+ENV PORT=11470
 EXPOSE 11470
 
-# التشغيل
-CMD ["./stremio-web-service.sh"]
+# تشغيل الخادم مع إظهار النتائج
+CMD ["sh", "-c", "echo 'Starting Stremio Server on Port $PORT...'; ./stremio-web-service-run.sh"]
